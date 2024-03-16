@@ -23,12 +23,6 @@ Crie o Arquivo .env
 ```sh
 cp .env.example .env
 ```
-## DB_CONNECTION=mysql
-## DB_HOST=db
-## DB_PORT=3306
-## DB_DATABASE=laravel
-## DB_USERNAME=root
-## DB_PASSWORD=root
 
 Acesse o container app
 ```sh
