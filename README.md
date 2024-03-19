@@ -5,7 +5,7 @@
 ### Passo a passo
 Clone Repositório
 ```sh
-git clone -b laravel-11-with-php-8.3 https://github.com/carlosaw/app-laravel-2
+git clone -b https://github.com/carlosaw/app-laravel-2/tree/auth
 ```
 [font](git clone -b laravel-11-with-php-8.3 https://github.com/especializati/setup-docker-laravel.git app-laravel)
 
