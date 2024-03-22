@@ -2,39 +2,53 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Image;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class GalleryController extends Controller
 {
   //
   public function index()
   {
-    return view('index');
+    $images = Image::all();
+
+    return view('index', ['images' => $images]);
+
   }
   public function upload(Request $request)
   {
-    //$title = $request->only('title');
-    //dd($title);
-
-    //dd($request->hasFile('image'));
     if($request->hasFile('image')) {
+        $title = $request->only('title');
         $image = $request->file('image');
-        //$name = time() . '.' . rand(0,9999) . $image->getClientOriginalExtension();
-        //$name = time() . '.' . rand(0,9999) . $image->getClientOriginalName();
+
         $name = $image->hashName();
-        //dd($name);
+
         $return = $image->storePublicly('uploads', 'public', $name);
-        dd($return);
+        $url = asset('storage/'.$return);
 
+        Image::create([
+            'title' => $title['title'],
+            'url' => $url
+        ]);
+        return redirect()->route('index');
 
-        // $title = $request->input('title');
-        // $url = $request->input('url');
     }
-    //$image= $request->file('image');
-    //dd($image);
 
   }
-  public function delete()
+  public function delete($id)
   {
+    //dd($id);
+    $image = Image::findOrFail($id);
+    //dd($image->url);
+    $url = parse_url($image->url);
+    //dd($url);
+    $path = ltrim($url['path'], '/storage\/');
+    //dd($path);
+    if (Storage::disk('public')->exists($path)) {
+        Storage::disk('public')->delete($path);
+        $image->delete();
+    }
+    return redirect()->route('index');
   }
 }
